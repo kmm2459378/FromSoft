@@ -188,7 +188,7 @@ namespace MxM
             if (!a_mxmAnimator)
                 return;
 
-            if (a_mxmAnimator.UpdateMode == AnimatorUpdateMode.AnimatePhysics)
+            if (a_mxmAnimator.UpdateMode == AnimatorUpdateMode.Fixed)
             {
                 m_fixedUpdateMxMAnimators.Add(a_mxmAnimator);
             }
@@ -203,7 +203,7 @@ namespace MxM
             if (!a_mxmAnimator)
                 return;
             
-            if (a_mxmAnimator.UpdateMode == AnimatorUpdateMode.AnimatePhysics)
+            if (a_mxmAnimator.UpdateMode == AnimatorUpdateMode.Fixed)
             {
                 m_fixedUpdateMxMAnimators.Remove(a_mxmAnimator);
                 m_fixedAnimatorIndex = Mathf.Clamp(m_animatorIndex, 0, Mathf.Max(0,m_fixedUpdateMxMAnimators.Count-1));
@@ -225,7 +225,7 @@ namespace MxM
                 || m_searchesThisFrame < m_maxSearchesPerFrame //Allow Search If max has not been reached
                 || a_searchDelay > Mathf.Min(m_maxAllowableDelay,a_mxmAnimator.MaxUpdateDelay)) //Allow search if max delay has been exceeded
             {
-                if (a_mxmAnimator.UpdateMode == AnimatorUpdateMode.AnimatePhysics)
+                if (a_mxmAnimator.UpdateMode == AnimatorUpdateMode.Fixed)
                 {
                     IncrementFixedUpdateAnimatorIndex();
                 }
