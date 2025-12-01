@@ -2,7 +2,7 @@
 
 using UnityEngine;
 using MxM;
-using Cinemachine;
+using Unity.Cinemachine;
 
 namespace MxMExamples
 {
@@ -18,7 +18,7 @@ namespace MxMExamples
         private UnityEngine.UI.Button[] m_profileButtons = null;
 
         [SerializeField]
-        private CinemachineFreeLook m_freeLookCamera = null;
+        private CinemachineCamera m_freeLookCamera = null;
 
         private bool m_uiHidden = false;
 
