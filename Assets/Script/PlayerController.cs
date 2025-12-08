@@ -10,6 +10,9 @@ public class PlayerController : MonoBehaviour
     Vector3 speed = Vector3.zero;
     Vector3 rot = Vector3.zero;
 
+    public Animator PlayerAnimetor;
+    bool isWalk;
+
     private void Update()
     {
         Move();
@@ -21,6 +24,7 @@ public class PlayerController : MonoBehaviour
     {
         speed = Vector3.zero;
         rot = Vector3.zero;
+        isWalk = false;
 
         if (Keyboard.current.wKey.isPressed)
         {
@@ -44,6 +48,7 @@ public class PlayerController : MonoBehaviour
         }
 
         transform.Translate(speed);
+        PlayerAnimetor.SetBool("walk",isWalk);
     }
 
     void Rotation()
@@ -66,5 +71,6 @@ public class PlayerController : MonoBehaviour
     {
         speed.z = PlayerSpeed;
         transform.eulerAngles = Camera.transform.eulerAngles + rot;
+        isWalk = true;
     }
 }
