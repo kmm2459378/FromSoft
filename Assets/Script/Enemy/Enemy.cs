@@ -4,6 +4,8 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     EnemyState e_state;
+    EnemyStateType e_type;
+    public Animator animator { get; private set; }
     public Transform Player;
 
     public EnemyStateIdle   e_stateIdle = new EnemyStateIdle();
@@ -14,13 +16,10 @@ public class Enemy : MonoBehaviour
 
     private void Start()
     {
+        animator = GetComponent<Animator>();
         ChangeState(e_stateIdle);
     }
 
-     void Update()
-    {
-        e_state.Update();
-    }
 
     public void ChangeState(EnemyState next)
     {
@@ -28,7 +27,13 @@ public class Enemy : MonoBehaviour
 
         e_state?.Exit();
         e_state = next;
+        e_type = e_state.stateType;
         e_state.Enter(this);
 
+    }
+
+    void Update()
+    {
+        e_state?.Update();
     }
 }

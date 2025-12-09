@@ -3,6 +3,7 @@ using UnityEngine;
 public class EnemyStateAttack : EnemyState
 {
     Enemy enemy;
+    public EnemyStateType stateType => EnemyStateType.Attack;
     public void Enter(Enemy enemy)
     {
         this.enemy = enemy;
