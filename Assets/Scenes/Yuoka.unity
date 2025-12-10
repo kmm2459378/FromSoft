@@ -136,10 +136,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 531be07cac91cd9408b2a9ef6d935985, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
+  movingVelocity: {x: 0, y: 0, z: 0}
+  moveSpeed: 7.5
+  applySpeed: 0.2
+  rb: {fileID: 389240434}
   Camera: {fileID: 1886897750}
-  PlayerSpeed: 0.05
   RotationSpeed: 1
-  PlayerAnimetor: {fileID: 389240436}
+  PlayerAnimator: {fileID: 389240436}
 --- !u!54 &389240434
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -473,15 +476,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 531be07cac91cd9408b2a9ef6d935985, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMove
+  movingVelocity: {x: 0, y: 0, z: 0}
+  moveSpeed: 7.5
+  applySpeed: 0.2
+  rb: {fileID: 0}
   Camera: {fileID: 1886897750}
-  PlayerSpeed: 0.05
   RotationSpeed: 1
-  PlayerAnimetor: {fileID: 668477030}
---- !u!95 &668477030 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 9500000, guid: 9ba437e07b4055c4aa4e2a95cbac09ae, type: 3}
-  m_PrefabInstance: {fileID: 668921665}
-  m_PrefabAsset: {fileID: 0}
+  PlayerAnimator: {fileID: 0}
 --- !u!1001 &668921665
 PrefabInstance:
   m_ObjectHideFlags: 0
