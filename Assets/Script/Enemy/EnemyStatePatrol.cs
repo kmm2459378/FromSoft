@@ -2,65 +2,55 @@ using UnityEngine;
 
 public class EnemyStatePatrol : EnemyState
 {
-    Enemy enemy;
     public EnemyStateType stateType => EnemyStateType.Patrol;
-    Vector3 moveDir;
-    float patrolTime = 0;
-    float maxPatrolTime = 5f;
+
+    private Enemy enemy;
+    private float moveDelay = 1f; // 移動を開始するまでの遅延
+    private float timer = 0f;
 
     public void Enter(Enemy enemy)
     {
         this.enemy = enemy;
-        Debug.Log("パトロール");
+        enemy.SetRandomDirection();
+        enemy.animator.SetBool("Walk", true);
 
-        moveDir = Random.insideUnitSphere;
-        moveDir.y = 0;           
-        moveDir.Normalize();
+        timer = 0f; 
+        enemy.patrolTimer = 0f;
+
+        Debug.Log("パトロール");
     }
 
     public void Update()
     {
-        patrolTime += Time.deltaTime;
-        if(patrolTime > maxPatrolTime)
+        enemy.patrolTimer += Time.deltaTime;
+        timer += Time.deltaTime;
+
+        if (enemy.patrolTimer > enemy.maxPatrolTime)
         {
             enemy.ChangeState(enemy.e_stateIdle);
-            patrolTime = 0f;
             return;
         }
 
-        float dist = Vector3.Distance(enemy.transform.position, enemy.Player.position);
-        if (dist < 8f)
+        float dist = enemy.DistanceToPlayer();
+        if (dist < enemy.chaseRange)
         {
             enemy.ChangeState(enemy.e_stateChace);
             return;
         }
 
-        // ▼滑らか回転
-        Quaternion targetRot = Quaternion.LookRotation(moveDir);
-        enemy.transform.rotation = Quaternion.Slerp(
-            enemy.transform.rotation,
-            targetRot,
-            3f * Time.deltaTime
-        );
+        //アニメーションが始まるまで移動禁止
+        if (timer < moveDelay) return;
+        enemy.RequestMove(enemy.moveDir);
 
-        // ▼滑らか移動
-        enemy.transform.position += enemy.transform.forward * 1f * Time.deltaTime;
-
-        // ランダムに方向変更
-        if (Random.value < 0.002f)
+        if (Random.value < enemy.directionChangeRate)
         {
-            moveDir = Random.insideUnitSphere;
-            moveDir.y = 0;
+            enemy.SetRandomDirection();
         }
-
     }
 
     public void Exit()
     {
-      Vector3 toPlayer = enemy.Player.position - enemy.transform.position;
-      toPlayer.y = 0f;
-      
-      enemy.transform.rotation = Quaternion.LookRotation(toPlayer);
+        enemy.animator.SetBool("Walk", false);
     }
 }
 
