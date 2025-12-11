@@ -19,10 +19,14 @@ public class PlayerController : MonoBehaviour
 
     public Animator PlayerAnimator; // アニメーター(walkフラグを渡す)
     bool isWalk;                    // 歩き中フラグ(Animatorに渡す)
+    bool canMove = true;
+
+    public Collider WeaponCollider;
 
     private void Update()
     {
         Move();
+        Attack();
         CameraRotation();
         Camera.transform.position = transform.position;
     }
@@ -53,6 +57,8 @@ public class PlayerController : MonoBehaviour
 
     void Move()
     {
+        if (!canMove) return;
+
         GetVelocity();
 
         Vector3 horizontalVelocity = new Vector3(movingVelocity.x, 0, movingVelocity.z);
@@ -90,5 +96,35 @@ public class PlayerController : MonoBehaviour
         }
 
         Camera.transform.eulerAngles += speed;
+    }
+
+    private void Attack()
+    {
+        if (Keyboard.current.spaceKey.isPressed)
+        {
+            PlayerAnimator.SetBool("attack", true);
+            canMove = false;
+
+            rb.linearVelocity = Vector3.zero;
+            movingVelocity    = Vector3.zero;
+            moveDirection     = Vector3.zero;
+        }
+    }
+
+    private void WeaponON()
+    {
+        WeaponCollider.enabled = true;
+        PlayerAnimator.SetBool("attack", false);
+    }
+
+    private void WeaponOFF()
+    {
+        WeaponCollider.enabled = false;
+        PlayerAnimator.SetBool("attack", false);
+    }
+
+    void CanMove()
+    {
+        canMove = true;
     }
 }
