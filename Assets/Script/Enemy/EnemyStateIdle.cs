@@ -4,24 +4,37 @@ public class EnemyStateIdle : EnemyState
 {
     Enemy enemy;
     float patrolTimer = 0f;
-    float patrolStart = 10f; // 5秒パトロールしたらIdleへ
+    float patrolStart = 5f; // 5秒パトロールしたらIdleへ
 
     public EnemyStateType stateType => EnemyStateType.Idle;
 
     public void Enter(Enemy enemy)
     {
         this.enemy = enemy;
+        if(enemy.prevState == EnemyStateType.Attack)
+        enemy.animator.SetBool("IdleAttack", true);
+        else
         enemy.animator.SetBool("Idle", true);
         Debug.Log("待機");
     }
 
     public void Update()
     {
+
+
         patrolTimer += Time.deltaTime;
-        float dist = Vector3.Distance(enemy.transform.position, enemy.Player.transform.position);
-        if(dist < 6f)
+        float dist = enemy.DistanceToPlayer();
+
+        if (dist < enemy.attackRange)
+        {
+            enemy.ChangeState(enemy.e_stateAttack);
+            return;
+        }
+
+        if ( dist < enemy.chaseRange)
         {
             enemy.ChangeState(enemy.e_stateChace);
+            return;
         }
 
         if (patrolTimer > patrolStart)
@@ -34,6 +47,9 @@ public class EnemyStateIdle : EnemyState
 
     public void Exit() 
     {
-        enemy.animator.SetBool("Idle", false);
+        if (enemy.prevState == EnemyStateType.Attack)
+            enemy.animator.SetBool("IdleAttack", false);
+        else
+            enemy.animator.SetBool("Idle", false);
     }
 }

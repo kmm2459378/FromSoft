@@ -4,44 +4,45 @@ public class EnemyStateChace : EnemyState
 {
     Enemy enemy;
     public EnemyStateTypeÅ@stateType => EnemyStateType.Chace;
-    Rigidbody rb;
+    
 
     public void Enter(Enemy enemy)
     {
         this.enemy = enemy;
-        rb = enemy.GetComponent<Rigidbody>();
+        enemy.SetToPlayerDirection();
+        enemy.animator.SetBool("Chace", true);
+        enemy.moveSpeed = enemy.chaceMoveSpeed;
+
         Debug.Log("í«ê’");
     }
 
     public void Update()
     {
-        Vector3 dir = (enemy.Player.position - enemy.transform.position).normalized;
-        dir.y = 0;
+        enemy.SetToPlayerDirection(); 
 
-
-        if (dir.magnitude < 1.5f)
+        float dir = enemy.DistanceToPlayer();
+        if (dir < enemy.attackRange)
+        {
             enemy.ChangeState(enemy.e_stateAttack);
+            return;
+        }
 
-        if (dir.magnitude > 8f)
+        if (dir > enemy.patrolRange)
+        {
             enemy.ChangeState(enemy.e_statePatrol);
+            return;
+        }
+
+
+        enemy.RequestMove(enemy.moveDir);
+
     }
 
-    void FixedUpdate()
+
+
+    public void Exit() 
     {
-        Vector3 dir = (enemy.Player.position - enemy.transform.position).normalized;
-        dir.y = 0;
-       
-        Quaternion targetRot = Quaternion.LookRotation(dir);
-        Quaternion newRot = Quaternion.Slerp(
-            enemy.transform.rotation,
-            targetRot,
-            5f * Time.deltaTime
-        );
-        rb.MoveRotation(newRot);
-      
-        Vector3 nextPos = enemy.transform.forward * 3f * Time.deltaTime;
-        rb.MovePosition(nextPos);
+        enemy.animator.SetBool("Chace", false);
+        enemy.moveSpeed = enemy.normalSpeed;
     }
-
-    public void Exit() { }
 }

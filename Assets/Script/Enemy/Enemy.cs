@@ -3,8 +3,11 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    
     EnemyState e_state;
     public EnemyStateType e_type;
+    public EnemyStateType prevState; 
+
     public Animator animator { get; private set; }
     public Transform Player;
     public Rigidbody rb { get; private set; }
@@ -14,14 +17,23 @@ public class Enemy : MonoBehaviour
     public EnemyStateChace e_stateChace = new EnemyStateChace();
     public EnemyStatePatrol e_statePatrol = new EnemyStatePatrol();
 
+
+    //エネミーのステータス
+    public float normalSpeed = 1.5f;
+    public float moveSpeed = 0;
+
     // パトロール関連
     public float patrolTimer = 0f;
     public float maxPatrolTime = 10f;
-    public float moveSpeed = 1.5f;
+    public float patrolMoveSpeed = 2f;
     public float rotateSpeed = 3f;
     public float chaseRange = 8f;
 
-
+    //追いかけ・アタック関連
+    public float attackRange = 1.5f;
+    public float patrolRange = 8f;
+    public float chaceMoveSpeed = 5f;
+   
     // ランダム方向
     public Vector3 moveDir;
     public float directionChangeRate = 0.002f;
@@ -41,7 +53,15 @@ public class Enemy : MonoBehaviour
     {
         if (e_state == next) return;
 
-        e_state?.Exit();
+        if (e_state != null)
+        {
+            prevState = e_state.stateType;
+            e_state.Exit();
+        }
+        else
+        {
+            prevState = next.stateType;
+        }
         e_state = next;
         e_type = e_state.stateType;
         e_state.Enter(this);
@@ -77,6 +97,13 @@ public class Enemy : MonoBehaviour
     public void SetRandomDirection()
     {
         moveDir = Random.insideUnitSphere;
+        moveDir.y = 0;
+        moveDir.Normalize();
+    }
+
+    public void SetToPlayerDirection()
+    {
+        moveDir = (Player.position - transform.position);
         moveDir.y = 0;
         moveDir.Normalize();
     }

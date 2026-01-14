@@ -13,9 +13,9 @@ public class EnemyStatePatrol : EnemyState
         this.enemy = enemy;
         enemy.SetRandomDirection();
         enemy.animator.SetBool("Walk", true);
-
         timer = 0f; 
         enemy.patrolTimer = 0f;
+        enemy.moveSpeed = enemy.patrolMoveSpeed;
 
         Debug.Log("ƒpƒgƒ[ƒ‹");
     }
@@ -51,6 +51,7 @@ public class EnemyStatePatrol : EnemyState
     public void Exit()
     {
         enemy.animator.SetBool("Walk", false);
+        enemy.moveSpeed = enemy.normalSpeed;
     }
 }
 

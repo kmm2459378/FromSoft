@@ -7,26 +7,23 @@ public class EnemyStateAttack : EnemyState
     public void Enter(Enemy enemy)
     {
         this.enemy = enemy;
+        enemy.animator.SetBool("Attack", true);
         Debug.Log("çUåÇ");
+
     }
 
     public void Update()
     {
-        float dir = Vector3.Distance(enemy.transform.position, enemy.Player.position);
-
-        if (dir < 1.5f)
+        AnimatorStateInfo info = enemy.animator.GetCurrentAnimatorStateInfo(0);
+        if (info.IsName("Attack") && info.normalizedTime >= 1f)
         {
-            enemy.ChangeState(enemy.e_stateAttack);
+            enemy.ChangeState(enemy.e_stateIdle);  
         }
 
-        else 
-        {
-            enemy.ChangeState(enemy.e_statePatrol);
-        }
     }
 
     public void Exit()
     {
-
+        enemy.animator.SetBool("Attack", false);
     }
 }
