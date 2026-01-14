@@ -21,6 +21,11 @@ public class PlayerController : MonoBehaviour
     bool isWalk;                    // 歩き中フラグ(Animatorに渡す)
     bool canMove = true;
 
+    bool isAttacking;
+    bool inputBuffered;
+    bool canAcceptComboInput;
+    int comboStep = 0;
+
     public Collider WeaponCollider;
 
     private void Update()
@@ -70,7 +75,7 @@ public class PlayerController : MonoBehaviour
 
             Quaternion targetRot = Quaternion.LookRotation(moveDirection, Vector3.up);
 
-            float smooth = applySpeed * Time.deltaTime * 20f;
+            float smooth = applySpeed * Time.deltaTime * 60f;
 
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, smooth);
         }
@@ -100,16 +105,80 @@ public class PlayerController : MonoBehaviour
 
     private void Attack()
     {
-        if (Keyboard.current.spaceKey.isPressed)
-        {
-            PlayerAnimator.SetBool("attack", true);
-            canMove = false;
+        if (!Keyboard.current.spaceKey.wasPressedThisFrame)
+            return;
 
+        if (!isAttacking)
+        {
+            StartCombo();
+
+            canMove = false;
             rb.linearVelocity = Vector3.zero;
-            movingVelocity    = Vector3.zero;
-            moveDirection     = Vector3.zero;
+            movingVelocity = Vector3.zero;
+            moveDirection = Vector3.zero;
+        }
+        else
+        {
+            // ★ 受付時間外の入力は「何もしない」と明確化
+            if (canAcceptComboInput)
+            {
+                inputBuffered = true;
+            }
+            else
+            {
+                Debug.Log("早すぎる入力（無視）");
+            }
         }
     }
+
+
+    void StartCombo()
+    {
+        isAttacking = true;
+        canMove = false;
+
+        comboStep = 1;
+        PlayerAnimator.SetTrigger("attack1");
+    }
+
+    void ContinueCombo()
+    {
+        Debug.Log($"ContinueCombo 呼ばれた comboStep={comboStep} buffered={inputBuffered}");
+
+        if (inputBuffered && comboStep < 3)
+        {
+            inputBuffered = false;
+            comboStep++;
+
+            Debug.Log($"次の攻撃へ {comboStep}");
+
+            if (comboStep == 2)
+                PlayerAnimator.SetTrigger("attack2");
+            else if (comboStep == 3)
+                PlayerAnimator.SetTrigger("attack3");
+        }
+    }
+
+    void ComboInputStart()
+    {
+        canAcceptComboInput = true;
+    }
+
+    void ComboInputEnd()
+    {
+        canAcceptComboInput = false;
+    }
+
+    void EndCombo()
+    {
+        isAttacking = false;
+        inputBuffered = false;
+        canAcceptComboInput = false;
+        comboStep = 0;
+
+        canMove = true;
+    }
+
 
     private void WeaponON()
     {
