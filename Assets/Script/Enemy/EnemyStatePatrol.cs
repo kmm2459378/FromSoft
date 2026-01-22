@@ -32,7 +32,9 @@ public class EnemyStatePatrol : EnemyState
         }
 
         float dist = enemy.DistanceToPlayer();
-        if (dist < enemy.chaseRange)
+        bool isView = enemy.IsPlayerInView(enemy.fieldView, enemy.chaseRange);
+
+        if (isView && dist < enemy.chaseRange)
         {
             enemy.ChangeState(enemy.e_stateChace);
             return;

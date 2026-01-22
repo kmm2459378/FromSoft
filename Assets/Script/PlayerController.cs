@@ -48,7 +48,7 @@ public class PlayerController : MonoBehaviour
         }
 
         transform.Translate(speed);
-        PlayerAnimetor.SetBool("walk",isWalk);
+        //PlayerAnimetor.SetBool("walk",isWalk);
     }
 
     void Rotation()

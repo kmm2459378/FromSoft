@@ -783,6 +783,7 @@ MonoBehaviour:
   Player: {fileID: 843887042}
   normalSpeed: 1.5
   moveSpeed: 0
+  fieldView: 140
   patrolTimer: 0
   maxPatrolTime: 10
   patrolMoveSpeed: 2

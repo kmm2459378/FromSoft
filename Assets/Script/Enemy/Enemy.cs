@@ -21,6 +21,8 @@ public class Enemy : MonoBehaviour
     //エネミーのステータス
     public float normalSpeed = 1.5f;
     public float moveSpeed = 0;
+    public int fieldView = 140;
+
 
     // パトロール関連
     public float patrolTimer = 0f;
@@ -112,9 +114,24 @@ public class Enemy : MonoBehaviour
     {
         requestedDir = dir; 
     }
-
+    //プレイヤーとの距離
     public float DistanceToPlayer()
     {
         return Vector3.Distance(transform.position, Player.position);
     }
+
+    //視野の中にいるのか
+    public bool IsPlayerInView(float viewAngle, float viewDistance)
+    {
+        Vector3 toPlayer = Player.position - transform.position;
+        toPlayer.y = 0f;
+
+        if (toPlayer.magnitude > viewDistance)
+            return false;
+
+        float angle = Vector3.Angle(transform.forward, toPlayer.normalized);
+        return angle <= viewAngle * 0.5f;
+    }
+
+
 }

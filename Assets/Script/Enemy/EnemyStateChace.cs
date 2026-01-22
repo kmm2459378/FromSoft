@@ -21,13 +21,15 @@ public class EnemyStateChace : EnemyState
         enemy.SetToPlayerDirection(); 
 
         float dir = enemy.DistanceToPlayer();
-        if (dir < enemy.attackRange)
+        bool isView = enemy.IsPlayerInView(enemy.fieldView, enemy.chaseRange);
+
+        if (isView@&& dir < enemy.attackRange)
         {
             enemy.ChangeState(enemy.e_stateAttack);
             return;
         }
 
-        if (dir > enemy.patrolRange)
+        if (!isView && dir < enemy.patrolRange)
         {
             enemy.ChangeState(enemy.e_statePatrol);
             return;

@@ -11,9 +11,7 @@ public class EnemyStateIdle : EnemyState
     public void Enter(Enemy enemy)
     {
         this.enemy = enemy;
-        if(enemy.prevState == EnemyStateType.Attack)
-        enemy.animator.SetBool("IdleAttack", true);
-        else
+        enemy.animator.SetBool("Chace", false);
         enemy.animator.SetBool("Idle", true);
         Debug.Log("‘Ò‹@");
     }
@@ -24,14 +22,15 @@ public class EnemyStateIdle : EnemyState
 
         patrolTimer += Time.deltaTime;
         float dist = enemy.DistanceToPlayer();
+        bool isView = enemy.IsPlayerInView(enemy.fieldView, enemy.chaseRange);
 
-        if (dist < enemy.attackRange)
+        if (isView && dist < enemy.attackRange)
         {
             enemy.ChangeState(enemy.e_stateAttack);
             return;
         }
 
-        if ( dist < enemy.chaseRange)
+        if (isView && dist < enemy.chaseRange)
         {
             enemy.ChangeState(enemy.e_stateChace);
             return;
@@ -47,9 +46,6 @@ public class EnemyStateIdle : EnemyState
 
     public void Exit() 
     {
-        if (enemy.prevState == EnemyStateType.Attack)
-            enemy.animator.SetBool("IdleAttack", false);
-        else
             enemy.animator.SetBool("Idle", false);
     }
 }
