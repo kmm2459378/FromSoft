@@ -529,7 +529,7 @@ Transform:
   m_GameObject: {fileID: 843887038}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -5, y: -3, z: -30}
+  m_LocalPosition: {x: -16.01, y: -3, z: -30}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -783,6 +783,7 @@ MonoBehaviour:
   Player: {fileID: 843887042}
   normalSpeed: 1.5
   moveSpeed: 0
+  fieldView: 140
   patrolTimer: 0
   maxPatrolTime: 10
   patrolMoveSpeed: 2
@@ -793,6 +794,7 @@ MonoBehaviour:
   chaceMoveSpeed: 5
   moveDir: {x: 0, y: 0, z: 0}
   directionChangeRate: 0.002
+  isAttacking: 0
 --- !u!54 &2052698957
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -1,55 +1,55 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyStateAttack : EnemyState
 {
     Enemy enemy;
-    bool hasPlayedAttack = false;@@//ƒAƒ^ƒbƒN‚µ‚Ä‚½‚©‚Ç‚¤‚©
+
     public EnemyStateType stateType => EnemyStateType.Attack;
+
+    float attackTimer;
+    float attackInterval = 1.2f; // æ”»æ’ƒé–“éš”ï¼ˆç§’ï¼‰
+
     public void Enter(Enemy enemy)
     {
         this.enemy = enemy;
-        hasPlayedAttack = false;
-        enemy.animator.SetBool("Attack", true);
-        enemy.animator.SetBool("Chace", true);
-        Debug.Log("UŒ‚");
-
+        attackTimer = 0f;
+        enemy.PlayRandomAttack();
     }
 
     public void Update()
     {
-     
-        AnimatorStateInfo info = enemy.animator.GetCurrentAnimatorStateInfo(0);
-
-        // UŒ‚ƒAƒjƒ‚É“ü‚Á‚½uŠÔ‚ðŒŸ’m
-        if (!hasPlayedAttack && info.IsName("Attack") && info.normalizedTime >= 0.8f)
-        {
-            hasPlayedAttack = true;
-        }
-
-        // ‚Ü‚¾ˆê“x‚àUŒ‚ƒAƒjƒ‚ªÄ¶‚³‚ê‚Ä‚¢‚È‚¢‚È‚ç‰½‚à‚µ‚È‚¢
-        if (!hasPlayedAttack)
+        if (enemy.isAttacking)
             return;
 
         float dist = enemy.DistanceToPlayer();
         bool isView = enemy.IsPlayerInView(enemy.fieldView, enemy.chaseRange);
 
-        // UŒ‚‹——£‚ð—£‚ê‚½‚ç’ÇÕ‚É–ß‚é
-        if (isView && dist > enemy.attackRange)
+        // æ”»æ’ƒã§ããªã„çŠ¶æ³ãªã‚‰æŠœã‘ã‚‹
+        if (!isView && enemy.isAttacking)
+        {
+            enemy.ChangeState(enemy.e_statePatrol);
+            return;
+        }
+
+        if (dist > enemy.attackRange)
         {
             enemy.ChangeState(enemy.e_stateChace);
             return;
         }
 
-        // Œ©Ž¸‚Á‚½‚çpatrol‚Ö
-        if (!isView)
+        // ã‚¿ã‚¤ãƒžãƒ¼æ›´æ–°
+        attackTimer += Time.deltaTime;
+
+        if (attackTimer >= attackInterval)
         {
-            enemy.ChangeState(enemy.e_statePatrol);
-            return;
+            enemy.PlayRandomAttack();
+            attackTimer = 0f;
         }
     }
+
     public void Exit()
     {
-        enemy.animator.SetBool("Attack", false);
+        enemy.isAttacking = false;
     }
 }

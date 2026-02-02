@@ -5,13 +5,13 @@ public class EnemyStatePatrol : EnemyState
     public EnemyStateType stateType => EnemyStateType.Patrol;
 
     private Enemy enemy;
-    private float moveDelay = 1f; // 移動を開始するまでの遅延
+    private float moveDelay = 1.5f; // 移動を開始するまでの遅延
     private float timer = 0f;
 
     public void Enter(Enemy enemy)
     {
         this.enemy = enemy;
-        enemy.SetRandomDirection();
+        //enemy.SetRandomDirection();
         enemy.animator.SetBool("Walk", true);
         timer = 0f; 
         enemy.patrolTimer = 0f;
@@ -40,13 +40,15 @@ public class EnemyStatePatrol : EnemyState
             return;
         }
 
-        //アニメーションが始まるまで移動禁止
-        if (timer < moveDelay) return;
-        enemy.RequestMove(enemy.moveDir);
 
-        if (Random.value < enemy.directionChangeRate)
+        if (timer >= moveDelay)
         {
-            enemy.SetRandomDirection();
+            enemy.RequestMove(enemy.moveDir);
+
+            if (Random.value < enemy.directionChangeRate)
+            {
+                enemy.SetRandomDirection();
+            }
         }
     }
 

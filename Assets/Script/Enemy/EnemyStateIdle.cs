@@ -4,9 +4,10 @@ public class EnemyStateIdle : EnemyState
 {
     Enemy enemy;
     float patrolTimer = 0f;
-    float patrolStart = 5f; // 5秒パトロールしたらIdleへ
+    float patrolStart = 5f; // 5秒パトロールしたらIdle
 
     public EnemyStateType stateType => EnemyStateType.Idle;
+    
 
     public void Enter(Enemy enemy)
     {

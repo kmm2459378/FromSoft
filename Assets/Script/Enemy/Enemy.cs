@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 
 public class Enemy : MonoBehaviour
@@ -18,30 +18,33 @@ public class Enemy : MonoBehaviour
     public EnemyStatePatrol e_statePatrol = new EnemyStatePatrol();
 
 
-    //ƒGƒlƒ~[‚ÌƒXƒe[ƒ^ƒX
+    //ã‚¨ãƒãƒŸãƒ¼ã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹
     public float normalSpeed = 1.5f;
     public float moveSpeed = 0;
     public int fieldView = 140;
 
 
-    // ƒpƒgƒ[ƒ‹ŠÖ˜A
+    // ãƒ‘ãƒˆãƒ­ãƒ¼ãƒ«é–¢é€£
     public float patrolTimer = 0f;
     public float maxPatrolTime = 10f;
     public float patrolMoveSpeed = 2f;
     public float rotateSpeed = 3f;
     public float chaseRange = 8f;
 
-    //’Ç‚¢‚©‚¯EƒAƒ^ƒbƒNŠÖ˜A
+    //è¿½ã„ã‹ã‘ãƒ»ã‚¢ã‚¿ãƒƒã‚¯é–¢é€£
     public float attackRange = 1.5f;
     public float patrolRange = 8f;
     public float chaceMoveSpeed = 5f;
    
-    // ƒ‰ƒ“ƒ_ƒ€•ûŒü
+    // ãƒ©ãƒ³ãƒ€ãƒ æ–¹å‘
     public Vector3 moveDir;
     public float directionChangeRate = 0.002f;
 
-    // ˆÚ“®w¦—pƒoƒbƒtƒ@
+    // ç§»å‹•æŒ‡ç¤ºç”¨ãƒãƒƒãƒ•ã‚¡
     private Vector3 requestedDir = Vector3.zero;
+
+    //æ”»æ’ƒé–¢é€£
+    public bool isAttacking;
 
     private void Start()
     {
@@ -79,7 +82,7 @@ public class Enemy : MonoBehaviour
     {
         if (requestedDir != Vector3.zero)
         {
-            // ‰ñ“]
+            // å›è»¢
             Quaternion targetRot = Quaternion.LookRotation(requestedDir);
             Quaternion newRot = Quaternion.Slerp(
                 rb.rotation,
@@ -88,7 +91,7 @@ public class Enemy : MonoBehaviour
             );
             rb.MoveRotation(newRot);
 
-            // ˆÚ“®
+            // ç§»å‹•
             Vector3 nextPos = rb.position + rb.transform.forward * moveSpeed * Time.fixedDeltaTime;
             rb.MovePosition(nextPos);
 
@@ -96,6 +99,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    //å‘ãæ–¹å‘
     public void SetRandomDirection()
     {
         moveDir = Random.insideUnitSphere;
@@ -103,6 +107,7 @@ public class Enemy : MonoBehaviour
         moveDir.Normalize();
     }
 
+    //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‹ã‚‰æ•µã®è·é›¢
     public void SetToPlayerDirection()
     {
         moveDir = (Player.position - transform.position);
@@ -114,13 +119,14 @@ public class Enemy : MonoBehaviour
     {
         requestedDir = dir; 
     }
-    //ƒvƒŒƒCƒ„[‚Æ‚Ì‹——£
+
+    //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¨ã®è·é›¢
     public float DistanceToPlayer()
     {
         return Vector3.Distance(transform.position, Player.position);
     }
 
-    //‹–ì‚Ì’†‚É‚¢‚é‚Ì‚©
+    //è¦–é‡ã®ä¸­ã«ã„ã‚‹ã®ã‹
     public bool IsPlayerInView(float viewAngle, float viewDistance)
     {
         Vector3 toPlayer = Player.position - transform.position;
@@ -132,6 +138,23 @@ public class Enemy : MonoBehaviour
         float angle = Vector3.Angle(transform.forward, toPlayer.normalized);
         return angle <= viewAngle * 0.5f;
     }
+
+    //æ¬¡ã®æ”»æ’ƒã®åˆ¤å®š
+    public void PlayRandomAttack()
+    {
+        int attackIndex = Random.Range(0, 5);
+        animator.SetFloat("AttackIndex", attackIndex);
+        animator.SetTrigger("Attack");
+        isAttacking = true;
+        Debug.Log($"æ”»æ’ƒ {attackIndex}");
+    }
+
+    // Animation Event ç”¨
+    public void OnAttackEnd()
+    {
+        isAttacking = false;
+    }
+
 
 
 }
