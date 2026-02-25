@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class EnemyStateAttack : EnemyState
 {
@@ -14,42 +13,48 @@ public class EnemyStateAttack : EnemyState
     {
         this.enemy = enemy;
         attackTimer = 0f;
-        enemy.PlayRandomAttack();
+        enemy.isAttacking = false;
     }
 
     public void Update()
     {
-        if (enemy.isAttacking)
-            return;
-
-        float dist = enemy.DistanceToPlayer();
+       
         bool isView = enemy.IsPlayerInView(enemy.fieldView, enemy.chaseRange);
 
         // 攻撃できない状況なら抜ける
-        if (!isView && enemy.isAttacking)
+        if (!isView)
         {
             enemy.ChangeState(enemy.e_statePatrol);
             return;
         }
 
-        if (dist > enemy.attackRange)
+        if (enemy.dist > enemy.attackRange)
         {
             enemy.ChangeState(enemy.e_stateChace);
             return;
         }
 
+        // 攻撃中なら何もしない
+        if (enemy.isAttacking)
+            return;
+
         // タイマー更新
         attackTimer += Time.deltaTime;
 
-        if (attackTimer >= attackInterval)
+        EnemyAttackData attack = enemy.ChooceAttack(enemy.dist);
+
+        if (attack != null && attackTimer >= attack.interval)
         {
-            enemy.PlayRandomAttack();
+            enemy.PlayAttack(attack);
             attackTimer = 0f;
         }
     }
+
 
     public void Exit()
     {
         enemy.isAttacking = false;
     }
+
+
 }

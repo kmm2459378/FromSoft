@@ -1,13 +1,15 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 
 public class Enemy : MonoBehaviour
 {
-    
+
     EnemyState e_state;
     public EnemyStateType e_type;
-    public EnemyStateType prevState; 
-
+    public EnemyStateType prevState;
+    public List<EnemyAttackData> attackList;
     public Animator animator { get; private set; }
     public Transform Player;
     public Rigidbody rb { get; private set; }
@@ -22,6 +24,7 @@ public class Enemy : MonoBehaviour
     public float normalSpeed = 1.5f;
     public float moveSpeed = 0;
     public int fieldView = 140;
+    public float dist { get; set; } = 0;
 
 
     // パトロール関連
@@ -75,6 +78,7 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
+        dist = DistanceToPlayer();
         e_state?.Update();
     }
 
@@ -139,14 +143,30 @@ public class Enemy : MonoBehaviour
         return angle <= viewAngle * 0.5f;
     }
 
-    //次の攻撃の判定
-    public void PlayRandomAttack()
+    //距離で出す技を抽選する
+    public EnemyAttackData ChooceAttack(float dist)
     {
-        int attackIndex = Random.Range(0, 5);
-        animator.SetFloat("AttackIndex", attackIndex);
+        var candidates = attackList.FindAll(a=> dist <= a.range);
+
+        if (candidates.Count == 0)
+            return null;
+
+        return candidates[Random.Range(0, candidates.Count)];
+    }
+
+    //攻撃を発動させる
+    public void PlayAttack(EnemyAttackData attack)
+    {  
+        animator.SetFloat("AttackIndex", attack.AttackIndex);
         animator.SetTrigger("Attack");
         isAttacking = true;
-        Debug.Log($"攻撃 {attackIndex}");
+        Debug.Log($"攻撃 {attack.AttackIndex}");
+    }
+
+    //攻撃の抽選
+    public void ChooceAttack()
+    {
+
     }
 
     // Animation Event 用
