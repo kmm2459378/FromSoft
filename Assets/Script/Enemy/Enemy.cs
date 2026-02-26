@@ -48,11 +48,15 @@ public class Enemy : MonoBehaviour
 
     //攻撃関連
     public bool isAttacking;
-
+    public EnemyAttackData currentAttack { get; private set; }
     private void Start()
     {
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
+        foreach (var atk in attackList)
+        {
+            atk.stateHash = Animator.StringToHash(atk.AttackName);
+        }
         ChangeState(e_stateIdle);
     }
 
@@ -154,19 +158,19 @@ public class Enemy : MonoBehaviour
         return candidates[Random.Range(0, candidates.Count)];
     }
 
-    //攻撃を発動させる
-    public void PlayAttack(EnemyAttackData attack)
-    {  
-        animator.SetFloat("AttackIndex", attack.AttackIndex);
-        animator.SetTrigger("Attack");
-        isAttacking = true;
-        Debug.Log($"攻撃 {attack.AttackIndex}");
-    }
 
     //攻撃の抽選
-    public void ChooceAttack()
+    public void ChooseAttack()
     {
+        var candidates = attackList.FindAll(a => dist <= a.range);
 
+        if (candidates.Count == 0)
+        {
+            currentAttack = null;
+            return;
+        }
+
+        currentAttack = candidates[Random.Range(0, candidates.Count)];
     }
 
     // Animation Event 用

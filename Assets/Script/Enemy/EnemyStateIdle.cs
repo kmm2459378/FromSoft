@@ -12,8 +12,7 @@ public class EnemyStateIdle : EnemyState
     public void Enter(Enemy enemy)
     {
         this.enemy = enemy;
-        enemy.animator.SetBool("Chace", false);
-        enemy.animator.SetBool("Idle", true);
+        enemy.animator.CrossFade("Idle", 0.15f);
         Debug.Log("‘Ò‹@");
     }
 
@@ -47,6 +46,6 @@ public class EnemyStateIdle : EnemyState
 
     public void Exit() 
     {
-            enemy.animator.SetBool("Idle", false);
+            
     }
 }

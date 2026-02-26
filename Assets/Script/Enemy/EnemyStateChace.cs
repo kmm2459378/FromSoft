@@ -10,7 +10,7 @@ public class EnemyStateChace : EnemyState
     {
         this.enemy = enemy;
         enemy.SetToPlayerDirection();
-        enemy.animator.SetBool("Chace", true);
+        enemy.animator.CrossFade("Run", 0.15f);
         enemy.moveSpeed = enemy.chaceMoveSpeed;
 
         Debug.Log("í«ê’");
@@ -44,7 +44,6 @@ public class EnemyStateChace : EnemyState
 
     public void Exit() 
     {
-        enemy.animator.SetBool("Chace", false);
         enemy.moveSpeed = enemy.normalSpeed;
     }
 }
