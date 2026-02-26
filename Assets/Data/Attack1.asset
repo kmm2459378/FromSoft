@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3516a632542d5854cbaba84feed18322, type: 3}
   m_Name: Attack1
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAttackData
-  AttackName: "\u901A\u5E38\u653B\u6483"
-  AttackIndex: 0
+  ID: 0
+  AttackName: NormalAttack
   AnimationLength: 0
   damege: 5
   range: 0
