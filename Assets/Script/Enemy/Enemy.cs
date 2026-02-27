@@ -14,10 +14,10 @@ public class Enemy : MonoBehaviour
     public Transform Player;
     public Rigidbody rb { get; private set; }
 
-    public EnemyStateIdle e_stateIdle = new EnemyStateIdle();
-    public EnemyStateAttack e_stateAttack = new EnemyStateAttack();
-    public EnemyStateChace e_stateChace = new EnemyStateChace();
-    public EnemyStatePatrol e_statePatrol = new EnemyStatePatrol();
+    public EnemyStateIdle e_stateIdle;
+    public EnemyStateAttack e_stateAttack;
+    public EnemyStateChace e_stateChace;
+    public EnemyStatePatrol e_statePatrol;
 
 
     //エネミーのステータス
@@ -48,7 +48,16 @@ public class Enemy : MonoBehaviour
 
     //攻撃関連
     public bool isAttacking;
-    public EnemyAttackData currentAttack { get; private set; }
+    public EnemyAttackData currentAttack;
+
+    void Awake()
+    {
+        e_stateIdle = new EnemyStateIdle();
+        e_stateAttack = new EnemyStateAttack();
+        e_stateChace = new EnemyStateChace();
+        e_statePatrol = new EnemyStatePatrol();
+    }
+
     private void Start()
     {
         animator = GetComponent<Animator>();
@@ -159,26 +168,12 @@ public class Enemy : MonoBehaviour
     }
 
 
-    //攻撃の抽選
-    public void ChooseAttack()
-    {
-        var candidates = attackList.FindAll(a => dist <= a.range);
-
-        if (candidates.Count == 0)
-        {
-            currentAttack = null;
-            return;
-        }
-
-        currentAttack = candidates[Random.Range(0, candidates.Count)];
-    }
 
     // Animation Event 用
     public void OnAttackEnd()
     {
         isAttacking = false;
     }
-
 
 
 }
