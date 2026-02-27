@@ -11,6 +11,7 @@ public class EnemyStateAttack : EnemyState
 
     public void Enter(Enemy enemy)
     {
+        Debug.Log("攻撃");
         this.enemy = enemy;
         attackTimer = 0f;
         enemy.isAttacking = false;
@@ -35,15 +36,20 @@ public class EnemyStateAttack : EnemyState
             return;
         }
 
-        // 攻撃中なら何もしない
-        if (enemy.isAttacking)
-            return;
+        attackTimer += Time.deltaTime;
 
-        EnemyAttackData attack = enemy.ChooceAttack(enemy.dist);
+        if (attackTimer >= attackInterval)
+        {
+            enemy.currentAttack = enemy.ChooceAttack(enemy.dist);
 
-        //animator.CrossFade(attack.animationStateName, 0.1f);
-        enemy.isAttacking = true;
-        
+            if (enemy.currentAttack != null)
+            {
+                enemy.animator.CrossFade(enemy.currentAttack.AttackName, 0.1f);
+                enemy.isAttacking = true;
+            }
+
+            attackTimer = 0f;
+        }
     }
 
 

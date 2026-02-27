@@ -780,10 +780,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   e_type: 0
   prevState: 0
-  attackList:
-  - {fileID: 11400000, guid: 7a300f5a7b695d0479d5e17c25d1f764, type: 2}
-  - {fileID: 11400000, guid: eaecd8625b6da824e9ced426a5410e7e, type: 2}
-  - {fileID: 11400000, guid: 78082a9db8c19104b8c386fb73e6450b, type: 2}
+  attackList: []
   Player: {fileID: 843887042}
   normalSpeed: 1.5
   moveSpeed: 0
