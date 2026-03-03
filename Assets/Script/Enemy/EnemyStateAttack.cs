@@ -36,7 +36,7 @@ public class EnemyStateAttack : EnemyState
             return;
         }
 
-        attackTimer += Time.deltaTime;
+  
 
         if (attackTimer >= attackInterval)
         {
