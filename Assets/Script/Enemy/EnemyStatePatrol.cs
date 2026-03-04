@@ -22,6 +22,9 @@ public class EnemyStatePatrol : EnemyState
 
     public void Update()
     {
+        float dist = enemy.DistanceToPlayer();
+        bool isView = enemy.IsPlayerInView(enemy.fieldView, enemy.chaseRange);
+
         enemy.patrolTimer += Time.deltaTime;
         timer += Time.deltaTime;
 
@@ -30,9 +33,6 @@ public class EnemyStatePatrol : EnemyState
             enemy.ChangeState(enemy.e_stateIdle);
             return;
         }
-
-        float dist = enemy.DistanceToPlayer();
-        bool isView = enemy.IsPlayerInView(enemy.fieldView, enemy.chaseRange);
 
         if (isView && dist < enemy.chaseRange)
         {

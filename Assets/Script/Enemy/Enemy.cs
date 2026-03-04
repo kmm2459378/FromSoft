@@ -47,8 +47,13 @@ public class Enemy : MonoBehaviour
     private Vector3 requestedDir = Vector3.zero;
 
     //攻撃関連
-    public bool isAttacking;
+    public bool isAttacking = false;
     public EnemyAttackData currentAttack;
+    public float attackCooldown = 0f;
+    public float attackInterval = 0f;
+    public float attackTimer;
+    public float stateLockUntil = 0f;
+
 
     void Awake()
     {
@@ -166,14 +171,5 @@ public class Enemy : MonoBehaviour
 
         return candidates[Random.Range(0, candidates.Count)];
     }
-
-
-
-    // Animation Event 用
-    public void OnAttackEnd()
-    {
-        isAttacking = false;
-    }
-
 
 }
