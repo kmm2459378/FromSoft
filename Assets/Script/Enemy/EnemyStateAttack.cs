@@ -13,7 +13,7 @@ public class EnemyStateAttack : EnemyState
         Debug.Log("攻撃");
         this.enemy = enemy;
         enemy.attackTimer = 0f;
-        enemy.isAttacking = true;
+        enemy.Attacking = true;
 
         enemy.currentAttack = enemy.ChooceAttack(enemy.dist);
         enemy.animator.CrossFade(enemy.currentAttack.AttackName, 0.1f);
@@ -24,10 +24,8 @@ public class EnemyStateAttack : EnemyState
     {
         enemy.attackTimer += Time.deltaTime;
 
-        if (enemy.isAttacking && enemy.attackTimer >= enemy.currentAttack.AnimationLength)
+        if (enemy.Attacking && enemy.attackTimer >= enemy.currentAttack.AnimationLength)
         {
-            enemy.isAttacking = false;
-
             // Idleに遷移
             enemy.ChangeState(enemy.e_stateIdle);
         }
@@ -52,7 +50,7 @@ public class EnemyStateAttack : EnemyState
 
     public void Exit()
     {
-        enemy.attackCooldown = 0f;
+        enemy.attackCoolDown = 0f;
         enemy.attackInterval = enemy.currentAttack.interval;
         enemy.stateLockUntil = Time.time + 0.5f;
     }

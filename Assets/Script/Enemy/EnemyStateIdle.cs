@@ -18,32 +18,37 @@ public class EnemyStateIdle : EnemyState
 
     public void Update()
     {
-        patrolTimer += Time.deltaTime;
         float dist = enemy.DistanceToPlayer();
         bool isView = enemy.IsPlayerInView(enemy.fieldView, enemy.chaseRange);
-
-        if (Time.time < enemy.stateLockUntil)
-            return;
-
-        if (isView && enemy.dist <= enemy.attackRange)
+        if (!enemy.Attacking) 
         {
-            enemy.ChangeState(enemy.e_stateAttack);
+            patrolTimer += Time.deltaTime;
+
+            if (isView && dist < enemy.chaseRange)
+            {
+                enemy.ChangeState(enemy.e_stateChace);
+                return;
+            }
+
+            if (patrolTimer > patrolStart)
+            {
+                enemy.ChangeState(enemy.e_statePatrol);
+                patrolTimer = 0f;
+                return;
+            }
+
         }
 
-        if (isView && dist < enemy.chaseRange)
+        enemy.attackCoolDown += Time.deltaTime;
+       
+        if (enemy.Attacking && enemy.attackCoolDown > enemy.attackInterval)
         {
-            enemy.ChangeState(enemy.e_stateChace);
-            return;
-         }
-
-        if (patrolTimer > patrolStart)
-        {
-            enemy.ChangeState(enemy.e_statePatrol);
-            patrolTimer = 0f;
-            return;
+            if (isView && enemy.dist <= enemy.attackRange)
+            {
+                enemy.ChangeState(enemy.e_stateAttack);
+            }
         }
-
-        }
+    }
     
 
     public void Exit() 

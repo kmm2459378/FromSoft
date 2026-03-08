@@ -11,11 +11,11 @@ public class EnemyStatePatrol : EnemyState
     public void Enter(Enemy enemy)
     {
         this.enemy = enemy;
-        //enemy.SetRandomDirection();
+        enemy.SetRandomDirection();
         enemy.animator.CrossFade("Walk", 0.7f);
         timer = 0f; 
         enemy.patrolTimer = 0f;
-        enemy.moveSpeed = enemy.patrolMoveSpeed;
+        enemy.moveSpeed = enemy.Speed;
 
         Debug.Log("ÉpÉgÉçÅ[Éã");
     }
@@ -54,7 +54,7 @@ public class EnemyStatePatrol : EnemyState
 
     public void Exit()
     {
-        enemy.moveSpeed = enemy.normalSpeed;
+        enemy.moveSpeed = enemy.Speed;
     }
 }
 

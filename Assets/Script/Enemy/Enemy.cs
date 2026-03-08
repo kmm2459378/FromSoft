@@ -21,7 +21,11 @@ public class Enemy : MonoBehaviour
 
 
     //エネミーのステータス
-    public float normalSpeed = 1.5f;
+    public string enemyID { get; set; }
+    public int HP { get; set; }
+    public float Speed{ get; set; }
+    public int AttackDamage{ get; set; }
+
     public float moveSpeed = 0;
     public int fieldView = 140;
     public float dist { get; set; } = 0;
@@ -30,7 +34,6 @@ public class Enemy : MonoBehaviour
     // パトロール関連
     public float patrolTimer = 0f;
     public float maxPatrolTime = 10f;
-    public float patrolMoveSpeed = 2f;
     public float rotateSpeed = 3f;
     public float chaseRange = 8f;
 
@@ -47,9 +50,9 @@ public class Enemy : MonoBehaviour
     private Vector3 requestedDir = Vector3.zero;
 
     //攻撃関連
-    public bool isAttacking = false;
+    public bool Attacking = false;
     public EnemyAttackData currentAttack;
-    public float attackCooldown = 0f;
+    public float attackCoolDown = 0f;
     public float attackInterval = 0f;
     public float attackTimer;
     public float stateLockUntil = 0f;
@@ -57,6 +60,10 @@ public class Enemy : MonoBehaviour
 
     void Awake()
     {
+        EnemyStatus status = EnemyDataBase.enemyStatusDic[enemyID];
+        HP = status.HP;
+        Speed = status.Speed;
+        AttackDamage = status.AttackDamage;
         e_stateIdle = new EnemyStateIdle();
         e_stateAttack = new EnemyStateAttack();
         e_stateChace = new EnemyStateChace();
@@ -170,6 +177,36 @@ public class Enemy : MonoBehaviour
             return null;
 
         return candidates[Random.Range(0, candidates.Count)];
+    }
+
+    //ダメージを食らった場合
+    public void TakeDamage(int damage)
+    {
+        HP -= damage;
+
+        // ヒットモーション
+        animator.CrossFade("Damage", 0.1f);
+
+        if (HP <= 0)
+        {
+            Die();
+        }
+    }
+
+    //死亡演出
+    void Die()
+    {
+        animator.CrossFade("Die",0.1f );
+
+        // AI停止
+        e_state = null;
+
+        // 移動停止
+        moveSpeed = 0;
+        rb.linearVelocity = Vector3.zero;
+
+        // 3秒後削除
+        Destroy(gameObject, 3f);
     }
 
 }
