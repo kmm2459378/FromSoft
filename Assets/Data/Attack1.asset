@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Attack1
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAttackData
   ID: 0
-  AttackName: NormalAttack
-  AnimationLength: 0
+  AttackName: NormalAttack1
+  AnimationLength: 1
   damege: 5
-  range: 0
-  interval: 0
+  range: 2
+  interval: 2

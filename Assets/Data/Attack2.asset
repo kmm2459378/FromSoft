@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAttackData
   ID: 1
   AttackName: NormalAttack2
-  AnimationLength: 0
+  AnimationLength: 1
   damege: 0
   range: 2
-  interval: 4
+  interval: 1

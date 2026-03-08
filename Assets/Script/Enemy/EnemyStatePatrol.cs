@@ -11,17 +11,20 @@ public class EnemyStatePatrol : EnemyState
     public void Enter(Enemy enemy)
     {
         this.enemy = enemy;
-        //enemy.SetRandomDirection();
+        enemy.SetRandomDirection();
         enemy.animator.CrossFade("Walk", 0.7f);
         timer = 0f; 
         enemy.patrolTimer = 0f;
-        enemy.moveSpeed = enemy.patrolMoveSpeed;
+        enemy.moveSpeed = enemy.Speed;
 
         Debug.Log("ÉpÉgÉçÅ[Éã");
     }
 
     public void Update()
     {
+        float dist = enemy.DistanceToPlayer();
+        bool isView = enemy.IsPlayerInView(enemy.fieldView, enemy.chaseRange);
+
         enemy.patrolTimer += Time.deltaTime;
         timer += Time.deltaTime;
 
@@ -30,9 +33,6 @@ public class EnemyStatePatrol : EnemyState
             enemy.ChangeState(enemy.e_stateIdle);
             return;
         }
-
-        float dist = enemy.DistanceToPlayer();
-        bool isView = enemy.IsPlayerInView(enemy.fieldView, enemy.chaseRange);
 
         if (isView && dist < enemy.chaseRange)
         {
@@ -54,7 +54,7 @@ public class EnemyStatePatrol : EnemyState
 
     public void Exit()
     {
-        enemy.moveSpeed = enemy.normalSpeed;
+        enemy.moveSpeed = enemy.Speed;
     }
 }
 

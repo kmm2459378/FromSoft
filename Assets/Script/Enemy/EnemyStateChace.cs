@@ -44,6 +44,6 @@ public class EnemyStateChace : EnemyState
 
     public void Exit() 
     {
-        enemy.moveSpeed = enemy.normalSpeed;
+        enemy.moveSpeed = enemy.Speed;
     }
 }
