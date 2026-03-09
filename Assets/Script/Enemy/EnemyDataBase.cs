@@ -3,14 +3,17 @@ using UnityEngine;
 
 public class EnemyDataBase : MonoBehaviour
 {
-    public static Dictionary<string, EnemyStatus> enemyStatusDic;
 
-    void Awake()
+    public static Dictionary<EnemyType, EnemyStatus> enemyStatusDic
+       = new Dictionary<EnemyType, EnemyStatus>();
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    static void Init()
     {
-        enemyStatusDic = new Dictionary<string, EnemyStatus>();
+        enemyStatusDic.Clear();
 
-        enemyStatusDic.Add("weak", new EnemyStatus(100, 2f, 10));
-        enemyStatusDic.Add("Boss", new EnemyStatus(150, 3f, 15));
-        enemyStatusDic.Add("BigBoss", new EnemyStatus(1000, 1.5f, 50));
+        enemyStatusDic.Add(EnemyType.Weak, new EnemyStatus(100, 2f, 10));
+        enemyStatusDic.Add(EnemyType.Boss, new EnemyStatus(150, 3f, 15));
+        enemyStatusDic.Add(EnemyType.BigBoss, new EnemyStatus(1000, 1.5f, 50));
     }
 }

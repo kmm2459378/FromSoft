@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 412135513690079024}
   m_Layer: 0
   m_Name: Colider_ Right_Hip
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -67,7 +67,7 @@ GameObject:
   - component: {fileID: 7852298646277423600}
   m_Layer: 0
   m_Name: Colider_ Head
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -122,7 +122,7 @@ GameObject:
   - component: {fileID: 8359510821025792793}
   m_Layer: 0
   m_Name: Colider_Hip
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -177,7 +177,7 @@ GameObject:
   - component: {fileID: 5038780829565739029}
   m_Layer: 0
   m_Name: Colider_ big_Spike3
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -232,7 +232,7 @@ GameObject:
   - component: {fileID: 2220324530563401800}
   m_Layer: 0
   m_Name: Colider_ big_Spike2
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -287,7 +287,7 @@ GameObject:
   - component: {fileID: 366606072265288076}
   m_Layer: 0
   m_Name: Colider_ Right_Shoulder
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7132,7 +7132,7 @@ GameObject:
   - component: {fileID: 7484879390945054255}
   m_Layer: 0
   m_Name: Colider_LeftHip
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7187,7 +7187,7 @@ GameObject:
   - component: {fileID: 8431924681223054457}
   m_Layer: 0
   m_Name: Colider_ Left_Shouder
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7242,7 +7242,7 @@ GameObject:
   - component: {fileID: 3764728148361031007}
   m_Layer: 0
   m_Name: Colider_ big_Spike1
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7297,7 +7297,7 @@ GameObject:
   - component: {fileID: 2994031671471539029}
   m_Layer: 0
   m_Name: Colider_ Right_Handle
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7352,7 +7352,7 @@ GameObject:
   - component: {fileID: 3868487503614065899}
   m_Layer: 0
   m_Name: Colider_ Right_Arm
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7438,7 +7438,7 @@ GameObject:
   - component: {fileID: 1092382578312300753}
   m_Layer: 0
   m_Name: Colider_ big_Spike
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7493,7 +7493,7 @@ GameObject:
   - component: {fileID: 7044680392006736933}
   m_Layer: 0
   m_Name: Colider_ Right_Knee
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7548,7 +7548,7 @@ GameObject:
   - component: {fileID: 4491007899508400135}
   m_Layer: 0
   m_Name: Colider_ Arm
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7603,7 +7603,7 @@ GameObject:
   - component: {fileID: 6667933314893401616}
   m_Layer: 0
   m_Name: Colider_ Left_Knee
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7689,7 +7689,7 @@ GameObject:
   - component: {fileID: 396446615113405887}
   m_Layer: 0
   m_Name: Colider_ Left_Handlee
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7775,7 +7775,7 @@ GameObject:
   - component: {fileID: 1019860543437530346}
   m_Layer: 0
   m_Name: Colider_Body
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

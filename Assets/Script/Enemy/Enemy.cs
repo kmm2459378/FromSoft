@@ -21,7 +21,8 @@ public class Enemy : MonoBehaviour
 
 
     //エネミーのステータス
-    public string enemyID { get; set; }
+
+    [SerializeField] private EnemyType enemyType;
     public int HP { get; set; }
     public float Speed{ get; set; }
     public int AttackDamage{ get; set; }
@@ -60,7 +61,14 @@ public class Enemy : MonoBehaviour
 
     void Awake()
     {
-        EnemyStatus status = EnemyDataBase.enemyStatusDic[enemyID];
+        if (!EnemyDataBase.enemyStatusDic.ContainsKey(enemyType))
+        {
+            Debug.LogError("EnemyTypeが登録されていません: " + enemyType);
+            return;
+        }
+
+        EnemyStatus status = EnemyDataBase.enemyStatusDic[enemyType];
+
         HP = status.HP;
         Speed = status.Speed;
         AttackDamage = status.AttackDamage;
