@@ -9,7 +9,11 @@ public class Enemy : MonoBehaviour
     EnemyState e_state;
     public EnemyStateType e_type;
     public EnemyStateType prevState;
-    public List<EnemyAttackData> attackList;
+
+    // 距離ごとの攻撃リスト
+    public List<EnemyAttackData> closeAttackList;
+    public List<EnemyAttackData> middleAttackList;
+    public List<EnemyAttackData> longAttackList;
     public Animator animator { get; private set; }
     public Transform Player;
     public Rigidbody rb { get; private set; }
@@ -39,7 +43,7 @@ public class Enemy : MonoBehaviour
     public float chaseRange = 8f;
 
     //追いかけ・アタック関連
-    public float attackRange = 1.5f;
+    public float attackRange = 20.0f;
     public float patrolRange = 8f;
     public float chaceMoveSpeed = 5f;
    
@@ -57,6 +61,7 @@ public class Enemy : MonoBehaviour
     public float attackInterval = 0f;
     public float attackTimer;
     public float stateLockUntil = 0f;
+    public int comboIndex;
 
 
     void Awake()
@@ -82,10 +87,6 @@ public class Enemy : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
-        foreach (var atk in attackList)
-        {
-            atk.stateHash = Animator.StringToHash(atk.AttackName);
-        }
         ChangeState(e_stateIdle);
     }
 
@@ -113,6 +114,7 @@ public class Enemy : MonoBehaviour
     {
         dist = DistanceToPlayer();
         e_state?.Update();
+       
     }
 
     void FixedUpdate()
@@ -134,6 +136,7 @@ public class Enemy : MonoBehaviour
 
             requestedDir = Vector3.zero;
         }
+
     }
 
     //向く方向
@@ -176,16 +179,119 @@ public class Enemy : MonoBehaviour
         return angle <= viewAngle * 0.5f;
     }
 
-    //距離で出す技を抽選する
-    public EnemyAttackData ChooceAttack(float dist)
+    // //距離で種類を決める
+    public AttackType GetAttackRange(float dist)
     {
-        var candidates = attackList.FindAll(a=> dist <= a.range);
+        if (dist <= 3f)
+            return AttackType.Close;
 
-        if (candidates.Count == 0)
+        //if (dist <= 10f)
+            return AttackType.Middle;
+
+        //return AttackType.Long;
+    }
+
+    //距離の技の中から一つ選ぶ
+    public EnemyAttackData ChooseAttack(float dist)
+    {
+        AttackType type = GetAttackRange(dist);
+
+        List<EnemyAttackData> list = null;
+
+        switch (type)
+        {
+            case AttackType.Close:
+                list = closeAttackList;
+                break;
+
+            case AttackType.Middle:
+                list = middleAttackList;
+                break;
+
+            case AttackType.Long:
+                list = longAttackList;
+                break;
+        }
+
+        if (list == null || list.Count == 0)
             return null;
 
-        return candidates[Random.Range(0, candidates.Count)];
+        return list[Random.Range(0, list.Count)];
     }
+
+    public void ExecuteAttack()
+    {
+        if (currentAttack == null) return;
+
+        switch (currentAttack.attackType)
+        {
+            case EnemyAttackType.Dash:
+
+                DashAttack(
+                    currentAttack.dashSpeed,
+                    currentAttack.dashTime
+                );
+
+                break;
+
+            case EnemyAttackType.Jump:
+
+                JumpAttack(
+                    currentAttack.jumpForce
+                );
+
+                break;
+
+            case EnemyAttackType.Combo:
+
+                break;
+        }
+    }
+
+    public void DashAttack(float speed, float time)
+    {
+        StartCoroutine(DashCoroutine(speed, time));
+    }
+
+    IEnumerator DashCoroutine(float speed, float time)
+    {
+        float timer = 0;
+
+        Vector3 dashDir = (Player.position - transform.position);
+        dashDir.y = 0;
+        dashDir.Normalize();
+
+        transform.forward = dashDir;
+
+        while (timer < time)
+        {
+            RequestMove(dashDir);
+            moveSpeed = speed;
+
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        moveSpeed = 0;
+    }
+
+    //ジャンプ攻撃
+    public void JumpAttack(float force)
+    {
+        Vector3 targetPos = Player.position;
+
+        Vector3 dir = targetPos - transform.position;
+        dir.y = 0;
+        dir.Normalize();
+
+        transform.forward = dir;
+
+        rb.AddForce(
+            dir * force + Vector3.up * force,
+            ForceMode.Impulse
+        );
+    }
+
 
     //ダメージを食らった場合
     public void TakeDamage(int damage)

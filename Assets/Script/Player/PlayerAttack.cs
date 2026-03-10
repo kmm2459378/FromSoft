@@ -8,7 +8,7 @@ public class PlayerAttack : MonoBehaviour
     {
         if (!other.CompareTag("Enemy")) return;
 
-        Enemy enemy = other.GetComponent<Enemy>();
+        Enemy enemy = other.GetComponentInParent<Enemy>();
 
             enemy.TakeDamage(damage);
         

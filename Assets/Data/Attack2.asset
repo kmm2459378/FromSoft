@@ -12,9 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3516a632542d5854cbaba84feed18322, type: 3}
   m_Name: Attack2
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAttackData
-  ID: 1
-  AttackName: NormalAttack2
-  AnimationLength: 1
-  damege: 0
-  range: 2
+  comboAnimations:
+  - Rush
+  AnimationLength: 3
+  damege: 5
   interval: 1
+  AttackType: 1
+  attackType: 1
+  dashSpeed: 5
+  dashTime: 3
+  jumpForce: 0
