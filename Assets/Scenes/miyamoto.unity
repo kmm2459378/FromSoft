@@ -437,11 +437,10 @@ GameObject:
   - component: {fileID: 843887041}
   - component: {fileID: 843887040}
   - component: {fileID: 843887039}
-  - component: {fileID: 843887043}
   - component: {fileID: 843887044}
   m_Layer: 0
   m_Name: player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -540,19 +539,6 @@ Transform:
   - {fileID: 179809198}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
---- !u!114 &843887043
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 843887038}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c99311a209030c343b36bab4fc31d54e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerAttack
-  damage: 10
 --- !u!54 &843887044
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -750,13 +736,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy
       objectReference: {fileID: 0}
+    - target: {fileID: 3490026887102114920, guid: e0a2ae8d8ae1c1f4b83e337da0b6f6b4, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
     - target: {fileID: 3490026887102541896, guid: e0a2ae8d8ae1c1f4b83e337da0b6f6b4, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.09254694
       objectReference: {fileID: 0}
     - target: {fileID: 3490026887102541896, guid: e0a2ae8d8ae1c1f4b83e337da0b6f6b4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.94
+      value: -3.664
       objectReference: {fileID: 0}
     - target: {fileID: 3490026887102541896, guid: e0a2ae8d8ae1c1f4b83e337da0b6f6b4, type: 3}
       propertyPath: m_LocalPosition.z
@@ -807,6 +797,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3490026887102114920, guid: e0a2ae8d8ae1c1f4b83e337da0b6f6b4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2052698960}
+    - targetCorrespondingSourceObject: {fileID: 3490026887102114920, guid: e0a2ae8d8ae1c1f4b83e337da0b6f6b4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2052698963}
   m_SourcePrefab: {fileID: 100100000, guid: e0a2ae8d8ae1c1f4b83e337da0b6f6b4, type: 3}
 --- !u!1 &2052698951 stripped
 GameObject:
@@ -827,10 +820,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   e_type: 0
   prevState: 0
-  attackList:
+  closeAttackList:
   - {fileID: 11400000, guid: 7a300f5a7b695d0479d5e17c25d1f764, type: 2}
+  middleAttackList:
   - {fileID: 11400000, guid: eaecd8625b6da824e9ced426a5410e7e, type: 2}
   - {fileID: 11400000, guid: 78082a9db8c19104b8c386fb73e6450b, type: 2}
+  longAttackList: []
   Player: {fileID: 843887042}
   enemyType: 0
   moveSpeed: 0
@@ -839,7 +834,7 @@ MonoBehaviour:
   maxPatrolTime: 10
   rotateSpeed: 3
   chaseRange: 8
-  attackRange: 1.5
+  attackRange: 20
   patrolRange: 8
   chaceMoveSpeed: 5
   moveDir: {x: 0, y: 0, z: 0}
@@ -850,6 +845,7 @@ MonoBehaviour:
   attackInterval: 0
   attackTimer: 0
   stateLockUntil: 0
+  comboIndex: 0
 --- !u!54 &2052698957
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -873,9 +869,9 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!114 &2052698960
 MonoBehaviour:
@@ -889,6 +885,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 062af1a0cf2086142b9d2d5a7318c60d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyDataBase
+--- !u!136 &2052698963
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2052698951}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.2
+  m_Height: 0.42
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.22, z: 0}
 --- !u!1 &2143758267
 GameObject:
   m_ObjectHideFlags: 0

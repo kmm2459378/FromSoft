@@ -7,5 +7,4 @@ public enum EnemyStateType
   Chace,
   Attack,
   Stun,
-  Dead,
 }

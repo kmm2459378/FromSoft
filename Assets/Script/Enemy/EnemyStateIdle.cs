@@ -18,6 +18,13 @@ public class EnemyStateIdle : EnemyState
 
     public void Update()
     {
+        enemy.attackCoolDown += Time.deltaTime;
+
+        if (enemy.Attacking && enemy.attackCoolDown > enemy.attackInterval)
+        {
+            enemy.ChangeState(enemy.e_stateAttack);
+        }
+
         float dist = enemy.DistanceToPlayer();
         bool isView = enemy.IsPlayerInView(enemy.fieldView, enemy.chaseRange);
         if (!enemy.Attacking) 
@@ -39,15 +46,6 @@ public class EnemyStateIdle : EnemyState
 
         }
 
-        enemy.attackCoolDown += Time.deltaTime;
-       
-        if (enemy.Attacking && enemy.attackCoolDown > enemy.attackInterval)
-        {
-            if (isView && enemy.dist <= enemy.attackRange)
-            {
-                enemy.ChangeState(enemy.e_stateAttack);
-            }
-        }
     }
     
 

@@ -14,42 +14,74 @@ public class EnemyStateAttack : EnemyState
         this.enemy = enemy;
         enemy.attackTimer = 0f;
         enemy.Attacking = true;
+        this.enemy = enemy;
 
-        enemy.currentAttack = enemy.ChooceAttack(enemy.dist);
-        enemy.animator.CrossFade(enemy.currentAttack.AttackName, 0.1f);
+        float dist = enemy.DistanceToPlayer();
 
+        enemy.currentAttack = enemy.ChooseAttack(dist);
+
+        if (enemy.currentAttack == null)
+            return;
+
+        enemy.comboIndex = 0;
+
+        // 攻撃実行
+        enemy.ExecuteAttack();
+
+        if (enemy.currentAttack.comboAnimations.Count > 0)
+        {
+            enemy.animator.CrossFade(
+                enemy.currentAttack.comboAnimations[0],
+                0.1f
+            );
+        }
     }
 
     public void Update()
     {
-        enemy.attackTimer += Time.deltaTime;
-
-        if (enemy.Attacking && enemy.attackTimer >= enemy.currentAttack.AnimationLength)
-        {
-            // Idleに遷移
-            enemy.ChangeState(enemy.e_stateIdle);
-        }
 
         float dist = enemy.DistanceToPlayer();
-        bool isView = enemy.IsPlayerInView(enemy.fieldView, enemy.chaseRange);
-        // 攻撃できない状況なら抜ける
-        if (!isView)
-        {
-            enemy.ChangeState(enemy.e_statePatrol);
-            return;
-        }
 
-        if (enemy.dist > enemy.attackRange)
+
+        if (dist > enemy.attackRange)
         {
+            Debug.Log("距離: " + dist);
             enemy.ChangeState(enemy.e_stateChace);
             return;
         }
 
-    }
+        enemy.attackTimer += Time.deltaTime;
 
+        if (enemy.attackTimer >= enemy.currentAttack.AnimationLength)
+        {
+            enemy.comboIndex++;
+            enemy.attackTimer = 0f;
+
+            if (enemy.comboIndex < enemy.currentAttack.comboAnimations.Count)
+            {
+                enemy.animator.CrossFade(
+                    enemy.currentAttack.comboAnimations[enemy.comboIndex],
+                    0.1f
+                );
+            }
+            else
+            {
+                enemy.ChangeState(enemy.e_stateIdle);
+            }
+
+
+        }
+    }
 
     public void Exit()
     {
+        // プレイヤー方向を取得
+        Vector3 dir = enemy.Player.position - enemy.transform.position;
+        dir.y = 0;
+        dir.Normalize();
+
+        // プレイヤーを向く
+        enemy.transform.forward = dir;
         enemy.attackCoolDown = 0f;
         enemy.attackInterval = enemy.currentAttack.interval;
         enemy.stateLockUntil = Time.time + 0.5f;
